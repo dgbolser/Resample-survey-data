@@ -63,9 +63,9 @@ grid_yrs <- replicate_df(california_current_grid, "Year", unique(catch$Year))
 #### Arrowtooth flounder ##########################################################################################################
 arrowtooth_dfs <- cleanup_by_species(df = catch, species = "arrowtooth flounder")
 arrowtooth_dfs <- lapply(arrowtooth_dfs, lat_filter_34)
- #arrowtooth_dfs <- arrowtooth_dfs[90:91] # reduce DFs for testing
+#arrowtooth_dfs <- arrowtooth_dfs[90:91] # reduce DFs for testing
 
- # make the names file
+# make the names file
 arrowtooth_files <- as.list(names(arrowtooth_dfs))
 
 # Reduce the number of DFs for testing
@@ -118,13 +118,13 @@ arrowtooth_indices_df <- bind_index_fn(arrowtooth_indices)
 write.csv(arrowtooth_indices_df, "arrowtooth_indices_df.csv", row.names = F)
 
 # Remove the rest of the files
-rm("arrowtooth_dfs", "arrowtooth_files", "arrowtooth_sdms", "arrowtooth_indices", "arrowtooth_indices_df")
+rm("arrowtooth_files", "arrowtooth_indices", "arrowtooth_indices_df")
 
 #### Bocaccio #############################################################################################################
 setwd(bocaccio)
 bocaccio_dfs <- cleanup_by_species(df = catch, species = "bocaccio")
 bocaccio_dfs <- lapply(bocaccio_dfs, depth_filter_500)
- bocaccio_dfs <- bocaccio_dfs[90:91] # reduce DFs for testing
+bocaccio_dfs <- bocaccio_dfs[90:91] # reduce DFs for testing
 # make the names file
 bocaccio_files <- as.list(names(bocaccio_dfs))
 

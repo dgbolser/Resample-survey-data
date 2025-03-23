@@ -16,7 +16,7 @@
 species_sdm_fn <- function(x, y, z) {
   # make mesh
   mesh <- sdmTMB::make_mesh(x, xy_cols = c("Longitude_dd", "Latitude_dd"), n_knots = 500)
-
+  
   # fit model
   fit <- sdmTMB::sdmTMB(
     total_catch_wt_kg ~ 0 + factor(Year) + Pass,
@@ -27,11 +27,11 @@ species_sdm_fn <- function(x, y, z) {
     anisotropy = TRUE,
     spatiotemporal = as.list(c("iid", "iid"))
   )
-
+  
   # get the index
   predictions <- predict(fit, newdata = z, return_tmb_object = TRUE)
   index <- sdmTMB::get_index(predictions, area = z$area_km2_WCGBTS, bias_correct = TRUE)
-
+  
   # save file
   saveRDS(fit, paste0("fit_", y, ".rds"))
   saveRDS(index, paste0("index_", y, ".rds"))
@@ -53,7 +53,7 @@ species_sdm_fn <- function(x, y, z) {
 species_sdm_lognormal_fn <- function(x, y, z) {
   # make mesh
   mesh <- sdmTMB::make_mesh(x, xy_cols = c("Longitude_dd", "Latitude_dd"), n_knots = 500)
-
+  
   # fit model
   fit <- sdmTMB::sdmTMB(
     total_catch_wt_kg ~ 0 + factor(Year) + Pass,
@@ -64,7 +64,7 @@ species_sdm_lognormal_fn <- function(x, y, z) {
     anisotropy = TRUE,
     spatiotemporal = as.list(c("iid", "iid"))
   )
-
+  
   # get the index
   predictions <- predict(fit, newdata = z, return_tmb_object = TRUE)
   index <- sdmTMB::get_index(predictions, area = z$area_km2_WCGBTS, bias_correct = FALSE) #bias correct off for now due to run time issues
@@ -90,7 +90,7 @@ species_sdm_lognormal_fn <- function(x, y, z) {
 canary_sdm_fn <- function(x, y, z) {
   # make mesh
   mesh <- sdmTMB::make_mesh(x, xy_cols = c("Longitude_dd", "Latitude_dd"), n_knots = 200)
-
+  
   # fit model
   fit <- sdmTMB::sdmTMB(
     total_catch_wt_kg ~ 0 + factor(Year) + Pass,
@@ -101,11 +101,11 @@ canary_sdm_fn <- function(x, y, z) {
     anisotropy = FALSE,
     spatiotemporal = as.list(c("iid", "off"))
   )
-
+  
   # get the index
   predictions <- predict(fit, newdata = z, return_tmb_object = TRUE)
   index <- sdmTMB::get_index(predictions, area = z$area_km2_WCGBTS, bias_correct = TRUE)
-
+  
   # save file
   saveRDS(fit, paste0("fit_", y, ".rds"))
   saveRDS(index, paste0("index_", y, ".rds"))
@@ -128,7 +128,7 @@ canary_sdm_fn <- function(x, y, z) {
 darkblotched_sdm_fn <- function(x, y, z) {
   # make mesh
   mesh <- sdmTMB::make_mesh(x, xy_cols = c("Longitude_dd", "Latitude_dd"), n_knots = 250)
-
+  
   # fit model
   fit <- sdmTMB::sdmTMB(
     total_catch_wt_kg ~ 0 + factor(Year) + Pass,
@@ -139,11 +139,11 @@ darkblotched_sdm_fn <- function(x, y, z) {
     anisotropy = TRUE,
     spatiotemporal = as.list(c("off", "iid"))
   )
-
+  
   # get the index
   predictions <- predict(fit, newdata = z, return_tmb_object = TRUE)
   index <- sdmTMB::get_index(predictions, area = z$area_km2_WCGBTS, bias_correct = TRUE)
-
+  
   # save file
   saveRDS(fit, paste0("fit_", y, ".rds"))
   saveRDS(index, paste0("index_", y, ".rds"))
@@ -166,7 +166,7 @@ darkblotched_sdm_fn <- function(x, y, z) {
 shortspine_sdm_fn <- function(x, y, z) {
   # make mesh
   mesh <- sdmTMB::make_mesh(x, xy_cols = c("Longitude_dd", "Latitude_dd"), n_knots = 500)
-
+  
   # fit model
   fit <- sdmTMB::sdmTMB(
     total_catch_wt_kg ~ 0 + factor(Year) + Pass + Depth_m + (Depth_m^2),
@@ -177,11 +177,11 @@ shortspine_sdm_fn <- function(x, y, z) {
     anisotropy = TRUE,
     spatiotemporal = as.list(c("iid", "iid"))
   )
-
+  
   # get the index
   predictions <- predict(fit, newdata = z, return_tmb_object = TRUE)
   index <- sdmTMB::get_index(predictions, area = z$area_km2_WCGBTS, bias_correct = TRUE)
-
+  
   # save file
   saveRDS(fit, paste0("fit_", y, ".rds"))
   saveRDS(index, paste0("index_", y, ".rds"))
@@ -205,7 +205,7 @@ shortspine_sdm_fn <- function(x, y, z) {
 widow_sdm_fn <- function(x, y, z) {
   # make mesh
   mesh <- sdmTMB::make_mesh(x, xy_cols = c("Longitude_dd", "Latitude_dd"), n_knots = 200)
-
+  
   # fit model
   fit <- sdmTMB::sdmTMB(
     total_catch_wt_kg ~ 0 + factor(Year) + Pass, # fyear and pass_scaled were specified in the configs doc.
@@ -216,11 +216,11 @@ widow_sdm_fn <- function(x, y, z) {
     anisotropy = TRUE,
     spatiotemporal = as.list(c("off", "off"))
   )
-
+  
   # get the index
   predictions <- predict(fit, newdata = z, return_tmb_object = TRUE)
   index <- sdmTMB::get_index(predictions, area = z$area_km2_WCGBTS, bias_correct = TRUE)
-
+  
   # save file
   saveRDS(fit, paste0("fit_", y, ".rds"))
   saveRDS(index, paste0("index_", y, ".rds"))

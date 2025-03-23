@@ -196,15 +196,21 @@ bind_index_fn <- function(x) {
 #' @return Read in list of all files containing the character string searched for.
 #'
 pull_files <- function(directory, string) {
-  # List all files in the directory
+  # List all RDS files in the directory
   files <- list.files(directory, pattern = "\\.rds$", full.names = TRUE)
-
+  
   # Filter files that contain the search string
   filtered_files <- files[grepl(string, files)]
-
-  # Read all filtered files into a list of data frames
-  data_list <- data_list <- setNames(lapply(filtered_files, readRDS), basename(filtered_files))
-
+  
+  # Read in files and avoid unnecessary memory copies
+  data_list <- vector("list", length(filtered_files))
+  names(data_list) <- basename(filtered_files)
+  
+  for (i in seq_along(filtered_files)) {
+    data_list[[i]] <- readRDS(filtered_files[i])
+  }
+  
+  gc()  # Force garbage collection
   return(data_list)
 }
 
@@ -261,4 +267,49 @@ depth_filter_675 <- function(x) {
 # remove deeper than 700 m
 depth_filter_700 <- function(x) {
   x[x$Depth_m < 700, ]
+}
+
+###### modified function to summarize fit files ################
+process_and_save_fits <- function(directory, name) {
+  # Get all RDS files that contain "fit" in their names
+  files <- list.files(directory, pattern = ".*fit.*\\.rds$", full.names = TRUE)
+  
+  # Define output file paths
+  fit_df_path <- file.path(directory, paste0(name, "_fit_df.csv"))
+  fit_pars_path <- file.path(directory, paste0(name, "_pars_df.csv"))
+  fit_check_path <- file.path(directory, paste0(name, "_fit_check_df.csv"))
+  
+  # Initialize empty lists to store results
+  all_fit_df <- list()
+  all_fit_pars <- list()
+  all_fit_check <- list()
+  
+  # Process each file
+  for (file in files) {
+    fit <- readRDS(file)
+    
+    # Ensure extracted objects are dataframes
+    fit_df <- as.data.frame(fit_df_fn(fit))
+    fit_pars <- as.data.frame(fit_pars_fn(fit))
+    fit_check <- as.data.frame(fit_check_fn(fit))
+    
+    # Store results in lists
+    all_fit_df[[file]] <- fit_df
+    all_fit_pars[[file]] <- fit_pars
+    all_fit_check[[file]] <- fit_check
+    
+    # Free memory
+    rm(fit, fit_df, fit_pars, fit_check)
+    gc()
+  }
+  
+  # Combine lists into single dataframes
+  final_fit_df <- if (length(all_fit_df) > 0) rbindlist(all_fit_df, fill = TRUE) else NULL
+  final_fit_pars <- if (length(all_fit_pars) > 0) rbindlist(all_fit_pars, fill = TRUE) else NULL
+  final_fit_check <- if (length(all_fit_check) > 0) rbindlist(all_fit_check, fill = TRUE) else NULL
+  
+  # Write to CSV if there is data
+  if (!is.null(final_fit_df)) fwrite(final_fit_df, file = fit_df_path)
+  if (!is.null(final_fit_pars)) fwrite(final_fit_pars, file = fit_pars_path)
+  if (!is.null(final_fit_check)) fwrite(final_fit_check, file = fit_check_path)
 }

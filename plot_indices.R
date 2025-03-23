@@ -114,7 +114,7 @@ yellowtail_df$species<- "Yellowtail rockfish"
 
 ####plot results ################################################################################################################
 all_indices<-rbind(arrowtooth_df,bocaccio_df,canary_df,darkblotched_df,dogfish_df,dover_df,lingcod_n_df,lingcod_s_df, longnose_df, petrale_df, pop_df,
-                    rex_df, sablefish_df, shortspine_df, shortspine_df, widow_df, yellowtail_df)
+                   rex_df, sablefish_df, shortspine_df, shortspine_df, widow_df, yellowtail_df)
 
 
 #log biomass estimates
@@ -161,4 +161,3 @@ ggplot(all_indices, aes(x = as.factor(effort), y = est)) +
   )
 
 ggsave(filename = 'all_indices_boxplot_biomass.png',plot = last_plot() , path = figures, width = 8, height = 8, device = 'png', dpi = 300)
-
