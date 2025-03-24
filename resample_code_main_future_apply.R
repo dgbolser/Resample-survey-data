@@ -683,25 +683,13 @@ files_to_remove <- setdiff(all_files, file.path(".", files_to_keep))  # Exclude 
 file.remove(files_to_remove)  # Delete the files
 
 #### Pacific spiny dogfish ########################################################################################################
-#### problem reading in data from parquet files ##################
+#### problem reading in data from parquet files; switched to old parallel code.
 setwd(dogfish)
 dogfish_dfs <- cleanup_by_species(df = catch, species = "Pacific spiny dogfish")
 dogfish_dfs <- lapply(dogfish_dfs, depth_filter_700)
 # dogfish_dfs <- dogfish_dfs[90:91] # reduce DFs for testing
 # make the names file
 dogfish_files <- as.list(names(dogfish_dfs))
-
-#save some space
-setwd(dogfish)
-#saveRDS(dogfish_dfs,"dogfish_dfs.rds")
-# Save each dataframe separately
-for (i in seq_along(dogfish_dfs)) {
-  write_parquet(dogfish_dfs[[i]], file.path(dogfish, paste0("df_",i,".parquet")))
-}
-
-# Optional: Remove from memory
-rm(dogfish_dfs)
-gc()
 
 # Set up parallel processing
 plan(callr, workers = 6)  # Adjust workers based on memory
@@ -718,8 +706,8 @@ grid_yrs <- read_parquet(file.path(basedir, "grid_yrs.parquet"))
 future_imap(dogfish_files, function(file_name, i) {
   gc()  # Free memory
   
-  # Load only the required dataframe
-  dogfish_df <- read_parquet(file.path(dogfish, paste0("df_", i, ".parquet")))
+  # Access the preloaded dataframe from the global environment
+  dogfish_df <- dogfish_dfs[[i]]
   
   # Run species SDM function
   species_sdm_fn(dogfish_df, file_name, grid_yrs)
