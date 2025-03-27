@@ -1,0 +1,129 @@
+---
+output: 
+  md_document: 
+    variant: gfm
+csl: "https://raw.githubusercontent.com/citation-style-language/styles/master/apa-no-ampersand.csl"
+bibliography: "https://raw.githubusercontent.com/afsc-gap-products/citations/main/cite/bibliography.bib"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warnings = FALSE, error = FALSE, message = FALSE, comment = FALSE, include=FALSE)
+link_repo <- "https://github.com/dgbolser/Resample-survey-data"
+```
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# [Resample survey data](`r link_repo`) <img src="`r paste0(link_repo, "/blob/em/img/bigelow_nefsc_bts.JPG?raw=true")`" alt="Logo." align="right" width="139" height="139"/>
+
+> This repository is under active development and all code, results, and other materials should be considered preliminary. Find code used for various versions in the [releases](`r paste0(link_repo, "/releases")` section for finalized products and project milestones.
+
+## This code is primarally maintained by:
+
+**Derek Bolser** (Derek.Bolser AT noaa.gov; [\@dgbolser](https://github.com/dgbolser))  
+
+Office of Science and Technology,
+
+National Marine Fisheries Service,
+
+National Oceanic and Atmospheric Administration,
+
+Silver Spring, MD 98195
+
+**Emily Markowitz** (Emily.Markowitz AT noaa.gov; [\@EmilyMarkowitz-NOAA](https://github.com/EmilyMarkowitz-NOAA))
+
+Alaska Fisheries Science Center,
+
+National Marine Fisheries Service,
+
+National Oceanic and Atmospheric Administration,
+
+Seattle, WA 98195
+
+**Ian Taylor** (Ian.Taylor AT noaa.gov; [\@iantaylor-NOAA](https://github.com/iantaylor-NOAA))
+
+Northwest Fisheries Science Center,
+
+National Marine Fisheries Service,
+
+National Oceanic and Atmospheric Administration,
+
+Seattle, WA 98195
+
+**Elizabeth Perl** (Elizabeth.Perl AT noaa.gov; [\@e-perl-NOAA](https://github.com/e-perl-NOAA))  
+
+/Affiliate with ECS Federal in support of the Office of Science and Technology,
+
+National Marine Fisheries Service,
+
+National Oceanic and Atmospheric Administration,
+
+Silver Spring, MD 98195
+
+# Table of contents
+
+```{r toc}
+toc <- strsplit(x = readtext::readtext(file = "./README.Rmd", verbosity = 0)[[2]], split = "\n")
+toc <- toc[[1]][substr(x = toc[[1]], start = 1, stop = 1) == "#"]
+toc <- toc[-c(1:3)]
+toc_list <- toc
+toc_list <- gsub(pattern = "### ", replacement = ">      - [*", x = toc_list, fixed = TRUE)
+toc_list <- gsub(pattern = "## ", replacement = ">    - [*", x = toc_list, fixed = TRUE)
+toc_list <- gsub(pattern = "# ", replacement = ">  - [*", x = toc_list, fixed = TRUE)
+toc_link <- tolower(gsub(pattern = " ", replacement = "-", 
+                          x = gsub(pattern = "#", replacement = "", 
+                                   x = gsub(pattern = "# ", replacement = "", 
+                                            x = toc, fixed = TRUE), fixed = TRUE)))
+toc <- paste0(toc_list, "*](#", toc_link, ")", collapse = "\n")
+```
+
+`r toc`
+
+# Purpose
+
+The 'get prediction grid' script should be run before running other scripts. Use the 'pull data' file or go to the 'data' folder to get the data we are working with then run the 'main' file. Other scripts provide supporting functions that are run in the 'main' file. Due to the high number of species, effort scenarios, and replicates, the script is very computationally intensive. Reduce the number of species/effort scenarios/replicates when testing.
+
+
+# User Resources
+
+- [GitHub repository](`r link_repo`).
+
+- [Access Tips and Documentation for All AFSC Groundfish Assessment Program Production Data](https://afsc-gap-products.github.io/gap_products/)
+
+- [AFSC Groundfish Assessment Program Fisheries One Stop Shop (FOSS)](https://www.fisheries.noaa.gov/foss)
+
+- [Groundfish Assessment Program Bottom Trawl Surveys](https://www.fisheries.noaa.gov/alaska/science-data/groundfish-assessment-program-bottom-trawl-surveys)
+
+- NWFSC links TBD
+
+# Cite data used in analysis
+
+@FOSSAFSCData
+
+<div id="refs"></div>
+
+# Suggestions and Comments
+
+If you see that the data, product, or metadata can be improved, you are invited to create a 
+[pull request](`r paste0(link_repo, "/pulls")`), 
+[submit an issue to the GitHub organization](`r "https://github.com/afsc-gap-products/data-requests/issues"`), or 
+[submit an issue to the code's repository](`r paste0(link_repo, "/issues")`).
+
+# R Version Metadata
+
+```{r session-info}
+sessionInfo()
+```
+
+# Legal
+
+## NOAA README
+
+This repository is a scientific product and is not official communication of the National Oceanic and Atmospheric Administration, or the United States Department of Commerce. All NOAA GitHub project code is provided on an ‘as is’ basis and the user assumes responsibility for its use. Any claims against the Department of Commerce or Department of Commerce bureaus stemming from the use of this GitHub project will be governed by all applicable Federal law. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by the Department of Commerce. The Department of Commerce seal and logo, or the seal and logo of a DOC bureau, shall not be used in any manner to imply endorsement of any commercial product or activity by DOC or the United States Government.
+
+## NOAA License
+
+Software code created by U.S. Government employees is not subject to copyright in the United States (17 U.S.C. §105). The United States/Department of Commerce reserve all rights to seek and obtain copyright protection in countries other than the United States for Software authored in its entirety by the Department of Commerce. To this end, the Department of Commerce hereby grants to Recipient a royalty-free, nonexclusive license to use, copy, and create derivative works of the Software outside of the United States.
+
+<img src="https://raw.githubusercontent.com/nmfs-general-modeling-tools/nmfspalette/main/man/figures/noaa-fisheries-rgb-2line-horizontal-small.png" alt="NOAA Fisheries" height="75"/>
+
+[U.S. Department of Commerce](https://www.commerce.gov/) \| [National Oceanographic and Atmospheric Administration](https://www.noaa.gov) \| [NOAA Fisheries](https://www.fisheries.noaa.gov/)
